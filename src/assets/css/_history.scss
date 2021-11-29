@@ -1,0 +1,51 @@
+.history-box {
+    padding: 24px 20px;
+    .info {
+        font-weight: 300;
+        color: $success;
+        font-size: 24px;
+    }
+    .title {
+        font-weight: 300;
+        font-size: 24px;
+        margin: 24px 0;
+    }
+    .messages-box {
+        .message {
+            border-bottom: 1px solid $light;
+            .message-title {
+                padding: 20px 0;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            .message-info {
+                display: flex;
+                justify-content: space-between;
+                .left {
+                    font-size: 13px;
+                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    .img {
+                        width: 60px;
+                        height: 48px;
+                        border-left: 1px solid $light;
+                        img {
+                            width: 48px;
+                            border-radius: 24px;
+                            margin: 0 6px;
+                        }
+                    }
+                }
+                .right {
+                    font-size: 13px;
+                    display: flex;
+                    align-items: start;
+                }
+            }
+            .message-content {
+                padding: 8px 0;
+            }
+        }
+    }
+}

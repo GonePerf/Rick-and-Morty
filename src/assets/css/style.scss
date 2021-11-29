@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+@import './theme';
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+}
+// Strony
+@import './history';
+@import './new-message';
+// Komponenty
+@import './components/navbar';
