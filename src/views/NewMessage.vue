@@ -15,12 +15,7 @@ export default {
       <label for="message">Message</label>
       <textarea name="message" id="message" placeholder="Enter the message here..."></textarea>
       <p class="error"></p>
-      <select name="character" id="character">
-        <option value="1">Rick</option>
-        <option value="2">Rick</option>
-        <option value="3">Rick</option>
-        <option value="4">Rick</option>
-      </select>
+      <v-select class="custom-select" :options="[{country: 'Canada', code: 'CA'},{country: 'Polska', code: 'PL'}]" placeholder="Pick a character" label="country" :reduce="country => country.code"></v-select>
       <p class="error"></p>
       <div class="intergalaxy-quickpost">
         <input type="checkbox" checked="checked" id="quickpost">
