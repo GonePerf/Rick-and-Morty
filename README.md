@@ -1,5 +1,5 @@
 # infermedica_recruitment_task
-## LIVE PREVIEW:  https://elastic-lamarr-2c7df8.netlify.app/
+## LIVE PREVIEW:  https://infermedica-task.netlify.app/
 
 ## Project setup
 ```
