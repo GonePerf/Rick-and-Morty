@@ -1,7 +1,11 @@
 <script>
+import { useStore } from 'vuex';
 
 export default {
   name: 'History',
+  setup() {
+    const store = useStore();
+  }
 }
 </script>
 

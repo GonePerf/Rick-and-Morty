@@ -231,6 +231,13 @@
   font-size: 16px;
   border: none;
   float: right;
+  cursor: pointer;
+}
+
+.new-message-box form button:disabled {
+  background: #E0E0E0;
+  color: #324B72;
+  cursor: not-allowed;
 }
 
 .new-message-box form .error {
@@ -239,6 +246,10 @@
 
 .new-message-box form .input-error {
   border: 1px solid #DE212B;
+}
+
+.new-message-box form .select-error .vs__dropdown-toggle {
+  border-color: #DE212B;
 }
 
 .new-message-box form .input-error::-webkit-input-placeholder {
@@ -282,20 +293,18 @@ header nav ul {
 
 header nav ul li {
   display: inline-block;
-  padding: 10px 16px;
+  padding: 10px 0;
 }
 
 header nav ul li a {
+  padding: 10px 16px;
   font-size: 16px;
   text-decoration: none;
   color: #324B72;
 }
 
-header nav ul li:hover {
+header nav ul li a.router-link-active {
   background-color: #4EADC5;
-}
-
-header nav ul li:hover a.router-link-active {
   color: #FFFFFF;
 }
 
