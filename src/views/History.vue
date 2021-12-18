@@ -1,50 +1,114 @@
 <script>
+import { computed, ref } from '@vue/reactivity';
 import { useStore } from 'vuex';
 
 export default {
   name: 'History',
   setup() {
     const store = useStore();
+    // VARIABLE IDENTIFYING THE MESSAGE WHITH THE DETAILS DISPLAYED
+    const openMessage = ref(null);
+
+    // FUNCTION TO SET openMessage VARIABLE
+    const setMessage = (m) => {
+      if(m === openMessage.value) {
+        openMessage.value = null;
+      } else {
+        openMessage.value = m;
+      }
+    }
+
+    return {
+      openMessage,
+      setMessage,
+      messages: computed(() => store.getters.messages),
+      messageSent: computed(() => store.getters.messageSent),
+    }
   }
 }
 </script>
 
 <template>
   <div class="history-box">
-    <h1 class="info">Message sent successfully  <img src="../assets/img/nike.png" alt=""></h1>
-    <h1 class="title">Message history</h1>
-    <div class="messages-box">
-      <div class="message">
-        <h2 class="message-title">My latest message title</h2>
-      </div>
-      <div class="message">
-        <h2 class="message-title">To Mr. Meeseeks</h2>
-      </div>
-      <div class="message">
-        <h2 class="message-title">To my buddy Rick</h2>
-        <div class="message-info">
-          <div class="left">
-            <div class="img">
-              <img src="https://rickandmortyapi.com/api/character/avatar/267.jpeg">
-            </div>
-            <div class="more-info">
-              <h3 class="name">Sent to: Rick Sanchez</h3>
-              <h3 class="date">Date: 01.01.2021</h3>
-              <h3 class="time">At: 21:37</h3>
-            </div>
-          </div>
-          <div class="right">
-            <img src="../assets/img/nike.png" alt=""> Using Quickpost™
-          </div>
-        </div>
-        <div class="message-content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras molestie sagittis lorem, ac posuere sem bibendum vitae. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas sit amet facilisis justo, nec imperdiet ex. Vestibulum facilisis hendrerit ipsum, et ultricies urna dapibus a. Curabitur viverra odio mollis magna commodo imperdiet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu mauris a nibh sollicitudin luctus vitae sed neque.
+    
+    <!-- DISPLAY ONLY WHEN USER SEND MESSAGE -->
+    <h1 v-if="messageSent" class="info">
+      Message sent successfully 
+      <img src="../assets/img/nike.png" alt="">
+    </h1>
 
-        </div>
+    <h1 class="title">Message history</h1>
+
+    <div class="messages-box">
+
+      <div class="message" v-for="message in messages" :key="message.id">
+        
+        <!-- IF USER CLICK THE TITLE, DETAILS WILL BE SHOWN -->
+        <h2 class="message-title" @click="setMessage(message)">
+          {{ message.title }}
+        </h2>
+
+        <!-- IF DETAILS ARE SHOWN, ARROW WILL BE ROTATE  -->
+        <img class="arrow" src="../assets/img/arrow.png"
+          :class="{ 'open' : openMessage && openMessage === message  }"
+        >
+        
+        <!-- SIMPLE TRANSITION FOR BETTER USER EXPERIENCE -->
+        <transition name="message">
+
+          <!-- DETAILS OF THE MESSAGE DISPLAYED  -->
+          <div v-if="openMessage && message.id === openMessage.id">
+            <div class="message-info">
+
+              <div class="left">
+                <div class="img">
+                  <img :src="message.character.image">
+                </div>
+                <div class="more-info">
+                  <h3 class="name">Sent to: {{ message.character.name }}</h3>
+                  <h3 class="date">Date: {{ message.date }}</h3>
+                  <h3 class="time">At: {{ message.time }}</h3>
+                </div>
+              </div>
+
+              <div class="right">
+                <img src="../assets/img/nike.png" v-if="message.quickpost">
+                <img src="../assets/img/close.png" v-else>
+                &nbsp;&nbsp;Using Quickpost™
+              </div>
+
+            </div>
+
+            <div class="message-content">
+              {{ message.content }}
+            </div>
+
+          </div>
+        </transition>
       </div>
-      <div class="message">
-        <h2 class="message-title">My first message</h2>
-      </div>
+
+      <!-- WHEN USER HAS NOT SENT ANY MESSAGE -->
+      <h3 v-if="!messages.length">
+        You don't have messages yet :/
+      </h3>
+
     </div>
   </div>
 </template>
+
+<style scoped>
+/* ANIMATION */
+.message-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.message-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.message-enter-from,
+.message-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>

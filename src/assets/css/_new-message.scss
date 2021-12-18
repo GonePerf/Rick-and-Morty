@@ -41,6 +41,7 @@
         }
         .custom-select .vs__search {
             margin: 0;
+            height: 36px;
         }
         .custom-select .vs__clear {
             background: white;
@@ -60,7 +61,7 @@
         .intergalaxy-quickpost {
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: flex-start;
             margin: 8px 0;
             input[type=checkbox] {
                 padding: 0;

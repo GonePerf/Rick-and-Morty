@@ -2,20 +2,23 @@
 import { computed, reactive } from '@vue/reactivity';
 import { useStore } from 'vuex';
 import { onMounted } from '@vue/runtime-core';
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'NewMessage',
   setup() {
 
     const store = useStore();
+    const router = useRouter();
 
     onMounted(() => {
       store.dispatch('fetchRickAndMortyCharacters');
+      store.commit('setMessageSent', false);
     });
 
     const form = reactive({
       title: '',
-      message: '',
+      content: '',
       character: null,
       quickpost: true,
     });
@@ -24,28 +27,43 @@ export default {
       title: false,
       message: false,
       character: false,
+      specialCharactersError: false
     });
 
     const validateTitle = () => {
-      if (form.title.length < 3) {
+      // REGEX TO CHECK IF TITLE HAS SPECIAL CHARACTERS, I ALLOWED SOME OF THEM - ? ! . ,
+      if(/[^a-zA-Z .,0-9!?]/.test(form.title)) {
+        errors.specialCharactersError = true;
         errors.title = true;
+      }
+      else if (form.title.length < 3 || form.title.length > 32) {
+        errors.title = true;
+        errors.specialCharactersError = false;
       } else {
         errors.title = false;
+        errors.specialCharactersError = false;
       }
     }
 
     const validateMessage = () => {
-      if (form.message.length < 15) {
+      if (form.content.length < 5 || form.content.length > 256) {
         errors.message = true;
       } else {
         errors.message = false;
       }
     }
+    
 
     const sendMessage = () => {
-      console.log(form.title, form.message, form.character, form.quickpost);
 
-      form.title = ''; form.message = ''; form.character = null; form.quickpost = true;
+      store.dispatch('addMessage', form);
+      store.dispatch('fetchMessages');
+      // FOR DISPLAYING: SEND MESSAGE SUCCESSFULLY
+      store.commit('setMessageSent', true);
+      router.push('/history');
+
+      form.title = ''; form.content = '';
+      form.character = null; form.quickpost = true;
     }
 
 
@@ -54,6 +72,10 @@ export default {
       errors,
       validateTitle,
       validateMessage,
+      sendMessage,
+      characters: computed(() => {
+        return store.getters.characters;
+      }),
       validate: computed(() => {
         if(errors.title || errors.message || !form.character) {
           return true;
@@ -61,11 +83,6 @@ export default {
           return false;
         }
       }),
-      sendMessage,
-      characters: computed(() => {
-        return store.getters.characters;
-      }),
-      store
     }
   }
 }
@@ -87,7 +104,12 @@ export default {
         @blur="validateTitle"
       >
 
-      <p class="error">{{ errors.title ? 'Please enter the text' : '' }}</p>
+      <p class="error" v-if="!errors.specialCharactersError">
+        {{ errors.title ? `Please enter the text (3-32 characters)` : '' }}
+      </p>
+      <p class="error" v-else>
+        Special characters are not allowed
+      </p>
 
       
       <!-- TREŚĆ -->
@@ -97,22 +119,27 @@ export default {
 
       <textarea name="message" id="message" placeholder="Enter the message here..."
         :class="{ 'input-error' : errors.message }"
-        v-model="form.message" 
+        v-model="form.content" 
         @blur="validateMessage"
       ></textarea>
 
-      <p class="error">{{ errors.message ? 'Message must be longer than 15 characters' : '' }}</p>
+      <p class="error">
+        {{ errors.message ? 'Please enter the text (5-256 characters)' : '' }}
+      </p>
       
       
       <!-- POSTAĆ -->
+      <label for="message">Character</label>
+
       <v-select class="custom-select" placeholder="Pick a character" label="name"
         :class="{ 'select-error' : errors.character }"
         :options="characters"
-        :reduce="character => character.id" 
         v-model="form.character"
       ></v-select>
 
-      <p class="error">{{ errors.character ? 'Pick character' : '' }}</p>
+      <p class="error">
+        {{ errors.character ? 'Pick character' : '' }}
+      </p>
       
       
       <!-- SZYBKA POCZTA MIEDZYGWIAZDOWA -->
@@ -122,13 +149,15 @@ export default {
           v-model="form.quickpost"
         >
 
-        <label for="quickpost">I want to use InterGalaxy Quickpost™</label>
+        <label for="quickpost">
+          I want to use InterGalaxy Quickpost™
+        </label>
 
       </div>
       
-      <button type="submit" 
-        :disabled="validate"
-      >Send</button>
+      <button type="submit" :disabled="validate">
+        Send
+      </button>
       
     </form>
   </div>

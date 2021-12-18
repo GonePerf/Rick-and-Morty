@@ -15,10 +15,21 @@
     .messages-box {
         .message {
             border-bottom: 1px solid $light;
+            position: relative;
             .message-title {
                 padding: 20px 0;
                 font-size: 14px;
                 font-weight: 600;
+                cursor: pointer;
+            }
+            .arrow {
+                position: absolute;
+                top: 25px;
+                transform: rotate(180deg);
+                right: 0;
+            }
+            .open {
+                transform: rotate(0);
             }
             .message-info {
                 display: flex;
@@ -42,7 +53,10 @@
                 .right {
                     font-size: 13px;
                     display: flex;
-                    align-items: start;
+                    align-items: flex-start;
+                    img {
+                        width: 17px;
+                    }
                 }
             }
             .message-content {

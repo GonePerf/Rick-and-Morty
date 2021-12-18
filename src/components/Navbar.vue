@@ -1,9 +1,3 @@
-<script>
-export default {
-
-}
-</script>
-
 <template>
   <header>
       <nav>
@@ -17,7 +11,3 @@ export default {
       </nav>
   </header>
 </template>
-
-<style>
-
-</style>
