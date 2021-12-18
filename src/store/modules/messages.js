@@ -41,6 +41,13 @@ export const messages = {
             messages.unshift(message);
             localStorage.setItem('messages', JSON.stringify(messages));
             commit('setMessages', messages);
+        },
+        deleteMessage({commit}, message){
+            // DELETING MESSAGE FROM LOCAL STORAGE AND STATE
+            let messages = JSON.parse(localStorage.getItem('messages'));
+            messages = messages.filter(item => item.id !== message.id);
+            localStorage.setItem('messages', JSON.stringify(messages));
+            commit('setMessages', messages);
         }
     }
 }

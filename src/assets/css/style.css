@@ -9,16 +9,53 @@
   color: #324B72;
 }
 
+.quickpost-info {
+  margin-top: 16px;
+  text-align: center;
+  padding: 0 15px;
+  color: #7B8BA5;
+}
+
 .history-box {
   padding: 24px 20px;
   max-width: 460px;
   margin: auto;
 }
 
+.history-box .check {
+  color: #50C878;
+  font-weight: bold;
+}
+
+.history-box .close {
+  color: #DE212B;
+  font-weight: bold;
+}
+
 .history-box .info {
   font-weight: 300;
   color: #50C878;
   font-size: 24px;
+}
+
+.history-box .info span {
+  font-size: 28px;
+}
+
+.history-box .delete {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  color: #E0E0E0;
+  cursor: pointer;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.history-box .delete:hover {
+  color: #DE212B;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 .history-box .title {

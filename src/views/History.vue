@@ -8,6 +8,7 @@ export default {
     const store = useStore();
     // VARIABLE IDENTIFYING THE MESSAGE WHITH THE DETAILS DISPLAYED
     const openMessage = ref(null);
+    const quickpostInformation = ref('');
 
     // FUNCTION TO SET openMessage VARIABLE
     const setMessage = (m) => {
@@ -18,9 +19,19 @@ export default {
       }
     }
 
+    const deleteMessage = (m) => {
+      if(confirm("Press a button!")) {
+        quickpostInformation.value = 'Messages using Quickpost™ cannot be canceled, the message has been removed only from the list';
+        store.dispatch('deleteMessage', m);
+        store.dispatch('fetchMessages');
+      }
+    }
+
     return {
       openMessage,
       setMessage,
+      deleteMessage,
+      quickpostInformation,
       messages: computed(() => store.getters.messages),
       messageSent: computed(() => store.getters.messageSent),
     }
@@ -29,12 +40,16 @@ export default {
 </script>
 
 <template>
+  <transition name="message">
+    <h2 class="quickpost-info" v-if="quickpostInformation.length">{{ quickpostInformation }}</h2>
+  </transition>
+  
   <div class="history-box">
     
     <!-- DISPLAY ONLY WHEN USER SEND MESSAGE -->
     <h1 v-if="messageSent" class="info">
       Message sent successfully 
-      <img src="../assets/img/nike.png" alt="">
+      <span class="material-icons check">check</span>
     </h1>
 
     <h1 class="title">Message history</h1>
@@ -50,9 +65,8 @@ export default {
 
         <!-- IF DETAILS ARE SHOWN, ARROW WILL BE ROTATE  -->
         <img class="arrow" src="../assets/img/arrow.png"
-          :class="{ 'open' : openMessage && openMessage === message  }"
+          :class="{ 'open' : openMessage && openMessage === message  }" 
         >
-        
         <!-- SIMPLE TRANSITION FOR BETTER USER EXPERIENCE -->
         <transition name="message">
 
@@ -72,9 +86,12 @@ export default {
               </div>
 
               <div class="right">
-                <img src="../assets/img/nike.png" v-if="message.quickpost">
-                <img src="../assets/img/close.png" v-else>
+                <span class="material-icons check" v-if="message.quickpost">check</span> 
+                <span class="material-icons close" v-else>close</span>
                 &nbsp;&nbsp;Using Quickpost™
+              </div>
+              <div class="delete">
+                <span class="material-icons delete" @click="deleteMessage(message)">delete</span>
               </div>
 
             </div>
