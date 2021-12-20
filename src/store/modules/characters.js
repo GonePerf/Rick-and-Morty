@@ -22,12 +22,12 @@ export const characters = {
             const data = await res.json();
             //MAP CHARACTERS TO ONLY HAVE ID, NAME AND IMAGE
             let characters = data.map(item => {
-              let betterCharacter = {
+              let lightCharacter = {
                 id: item.id,
                 name: item.name,
                 image: item.image,
               }
-              return betterCharacter;
+              return lightCharacter;
             });
             // SET CHARACTERS IN LOCAL STORAGE FOR MINIMALIZE NUMBER OF REQUESTS
             localStorage.setItem('characters', JSON.stringify(characters));

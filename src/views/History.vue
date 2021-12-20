@@ -20,8 +20,11 @@ export default {
     }
 
     const deleteMessage = (m) => {
-      if(confirm("Press a button!")) {
-        quickpostInformation.value = 'Messages using Quickpost™ cannot be canceled, the message has been removed only from the list';
+      if(confirm("Czy na pewno chcesz usunąć tę wiadomość?")) {
+        // if(m.quickpost) {
+        //   quickpostInformation.value = 'Messages using Quickpost™ cannot be canceled, the message has been removed only from the list';
+        // }
+        
         store.dispatch('deleteMessage', m);
         store.dispatch('fetchMessages');
       }
