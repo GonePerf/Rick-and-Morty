@@ -1,5 +1,5 @@
-# infermedica_recruitment_task
-## LIVE PREVIEW:  https://infermedica-task.netlify.app/
+#
+## LIVE PREVIEW:  https://rick4ndmorty.netlify.app
 
 ## Project setup
 ```
